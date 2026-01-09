@@ -1,860 +1,513 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"> 
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Academix Pro - Course Management System</title>
+    <title>Course Management System - GitHub Repository</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            /* Professional Color Scheme */
-            --primary-dark: #0F1B2E;
-            --primary: #1A3A5F;
-            --primary-light: #2D5B8E;
-            --accent: #D4AF37;
-            --neutral-light: #F8FAFC;
-            --neutral: #E2E8F0;
-            --neutral-dark: #2D3748;
-            --success: #10B981;
-            --warning: #F59E0B;
-            --error: #EF4444;
-            
-            /* Glass morphism effect */
-            --glass-bg: rgba(255, 255, 255, 0.1);
-            --glass-border: rgba(255, 255, 255, 0.2);
-            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        }
-        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
         }
         
         body {
-            background: linear-gradient(135deg, #0F1B2E 0%, #1A3A5F 100%);
-            color: var(--neutral-light);
-            line-height: 1.6;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-        
-        .container {
-            width: 90%;
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        /* Header Styles */
-        header {
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--glass-border);
-            padding: 1rem 0;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: var(--glass-shadow);
-        }
-        
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .logo i {
-            font-size: 2.5rem;
-            color: var(--accent);
-        }
-        
-        .logo h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            background: linear-gradient(to right, #D4AF37, #F7E7A0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 25px;
-        }
-        
-        nav a {
-            color: var(--neutral-light);
-            text-decoration: none;
-            font-weight: 500;
-            padding: 8px 15px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-        
-        nav a:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px);
-        }
-        
-        nav a.active {
-            background: rgba(212, 175, 55, 0.2);
-            color: var(--accent);
-        }
-        
-        nav a.active:after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 5px;
-            height: 5px;
-            background: var(--accent);
-            border-radius: 50%;
-        }
-        
-        .user-actions {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .notification-badge {
-            position: relative;
-        }
-        
-        .badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background: var(--error);
-            color: white;
-            border-radius: 50%;
-            width: 18px;
-            height: 18px;
-            font-size: 0.7rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 2px solid var(--accent);
-        }
-        
-        .avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        /* Search Bar */
-        .search-container {
-            position: relative;
-            width: 300px;
-        }
-        
-        .search-container input {
-            width: 100%;
-            padding: 12px 45px 12px 15px;
-            border-radius: 30px;
-            border: none;
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--neutral-light);
-            outline: none;
-            backdrop-filter: blur(5px);
-        }
-        
-        .search-container input::placeholder {
-            color: rgba(255, 255, 255, 0.7);
-        }
-        
-        .search-container button {
-            position: absolute;
-            right: 5px;
-            top: 5px;
-            background: var(--accent);
-            border: none;
-            color: var(--primary-dark);
-            cursor: pointer;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-        
-        .search-container button:hover {
-            background: #F7E7A0;
-            transform: scale(1.1);
-        }
-        
-        /* Main Content */
-        main {
-            padding: 40px 0;
-        }
-        
-        .dashboard-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-        
-        .dashboard-header h2 {
-            font-size: 2.2rem;
-            background: linear-gradient(to right, #F7E7A0, #D4AF37);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 700;
-        }
-        
-        .dashboard-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px;
-            margin-bottom: 40px;
-        }
-        
-        .stat-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 25px;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            box-shadow: var(--glass-shadow);
-            border: 1px solid var(--glass-border);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-        }
-        
-        .stat-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-        }
-        
-        .stat-card:nth-child(1) .stat-icon {
-            background: rgba(16, 185, 129, 0.2);
-            color: var(--success);
-        }
-        
-        .stat-card:nth-child(2) .stat-icon {
-            background: rgba(245, 158, 11, 0.2);
-            color: var(--warning);
-        }
-        
-        .stat-card:nth-child(3) .stat-icon {
-            background: rgba(45, 91, 142, 0.2);
-            color: var(--primary-light);
-        }
-        
-        .stat-card:nth-child(4) .stat-icon {
-            background: rgba(239, 68, 68, 0.2);
-            color: var(--error);
-        }
-        
-        .stat-info h3 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-        
-        .stat-info p {
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 0.9rem;
-        }
-        
-        /* Courses Grid */
-        .section-title {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .section-title i {
-            color: var(--accent);
-        }
-        
-        .courses-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-        
-        .course-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: var(--glass-shadow);
-            border: 1px solid var(--glass-border);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .course-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-        }
-        
-        .course-image {
-            height: 180px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .course-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-        
-        .course-card:hover .course-image img {
-            transform: scale(1.05);
-        }
-        
-        .course-category {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: var(--accent);
-            color: var(--primary-dark);
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-        
-        .course-content {
-            padding: 20px;
-        }
-        
-        .course-content h3 {
-            font-size: 1.3rem;
-            margin-bottom: 10px;
-        }
-        
-        .course-meta {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.7);
-        }
-        
-        .course-description {
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 20px;
-            font-size: 0.95rem;
+            background: #0d1117;
+            color: #c9d1d9;
             line-height: 1.5;
         }
         
-        .progress-bar {
-            height: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-            margin-bottom: 15px;
-            overflow: hidden;
+        .github-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 16px;
         }
         
-        .progress-fill {
-            height: 100%;
-            background: var(--accent);
-            border-radius: 4px;
-            width: 65%; /* Example progress */
+        /* GitHub Header */
+        .github-header {
+            background: #010409;
+            border-bottom: 1px solid #21262d;
+            padding: 16px 0;
         }
         
-        .course-actions {
+        .repo-header {
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        
+        .repo-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .repo-name {
+            font-size: 20px;
+            font-weight: 600;
+            color: #58a6ff;
+        }
+        
+        .repo-status {
+            padding: 2px 6px;
+            background: #21262d;
+            border-radius: 12px;
+            font-size: 12px;
+            color: #8b949e;
+        }
+        
+        .repo-actions {
+            display: flex;
+            gap: 8px;
         }
         
         .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--accent);
-            color: var(--primary-dark);
-            padding: 10px 20px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            border: none;
+            padding: 5px 16px;
+            background: #21262d;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            color: #c9d1d9;
             cursor: pointer;
-        }
-        
-        .btn:hover {
-            background: #F7E7A0;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
-        }
-        
-        .btn-outline {
-            background: transparent;
-            border: 1px solid var(--glass-border);
-            color: var(--neutral-light);
-        }
-        
-        .btn-outline:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: var(--accent);
-            color: var(--accent);
-        }
-        
-        /* Sea Dog Section */
-        .featured-section {
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 40px;
-            margin-bottom: 40px;
+            font-size: 14px;
             display: flex;
             align-items: center;
-            gap: 40px;
-            box-shadow: var(--glass-shadow);
-            border: 1px solid var(--glass-border);
+            gap: 4px;
         }
         
-        .featured-content {
+        .btn-primary {
+            background: #238636;
+            border-color: #2ea043;
+            color: white;
+        }
+        
+        /* Navigation */
+        .repo-nav {
+            border-bottom: 1px solid #21262d;
+            margin-top: 16px;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+        }
+        
+        .nav-tab {
+            padding: 8px 16px;
+            border: 1px solid transparent;
+            border-bottom: 2px solid transparent;
+            color: #8b949e;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        
+        .nav-tab.active {
+            border-color: #21262d;
+            border-bottom-color: #f78166;
+            color: #c9d1d9;
+            font-weight: 600;
+        }
+        
+        /* Repository Content */
+        .repo-content {
+            display: flex;
+            gap: 24px;
+            margin-top: 24px;
+        }
+        
+        .repo-main {
             flex: 1;
         }
         
-        .featured-content h2 {
-            font-size: 2rem;
-            margin-bottom: 15px;
-            background: linear-gradient(to right, #F7E7A0, #D4AF37);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .repo-sidebar {
+            width: 300px;
         }
         
-        .featured-content p {
-            margin-bottom: 25px;
-            line-height: 1.7;
-            color: rgba(255, 255, 255, 0.9);
-        }
-        
-        .featured-image {
-            flex: 1;
-            border-radius: 15px;
+        .readme-box {
+            border: 1px solid #30363d;
+            border-radius: 6px;
             overflow: hidden;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
         }
         
-        .featured-image img {
-            width: 100%;
-            height: auto;
-            display: block;
+        .readme-header {
+            background: #161b22;
+            padding: 16px;
+            border-bottom: 1px solid #21262d;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .readme-content {
+            padding: 32px;
+        }
+        
+        .file-explorer {
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            margin-bottom: 24px;
+        }
+        
+        .file-header {
+            background: #161b22;
+            padding: 8px 16px;
+            border-bottom: 1px solid #21262d;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .file-list {
+            padding: 8px 0;
+        }
+        
+        .file-item {
+            display: flex;
+            align-items: center;
+            padding: 4px 16px;
+            gap: 8px;
+            text-decoration: none;
+            color: #8b949e;
+        }
+        
+        .file-item:hover {
+            background: #161b22;
+        }
+        
+        .file-item i {
+            width: 16px;
+            text-align: center;
+        }
+        
+        .code-block {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 16px;
+            margin: 16px 0;
+            overflow-x: auto;
+        }
+        
+        .code-line {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+        
+        .line-number {
+            color: #484f58;
+            margin-right: 16px;
+            display: inline-block;
+            width: 30px;
+            text-align: right;
+        }
+        
+        .sidebar-section {
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+        
+        .sidebar-header {
+            background: #161b22;
+            padding: 12px 16px;
+            border-bottom: 1px solid #21262d;
+            font-weight: 600;
+        }
+        
+        .sidebar-content {
+            padding: 16px;
+        }
+        
+        .lang-stat {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        
+        .lang-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+            display: inline-block;
+        }
+        
+        .contributor {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        
+        .avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
         }
         
         /* Footer */
-        footer {
-            background: rgba(15, 27, 46, 0.9);
-            padding: 40px 0 20px;
-            border-top: 1px solid var(--glass-border);
-        }
-        
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-            margin-bottom: 30px;
-        }
-        
-        .footer-section h3 {
-            margin-bottom: 20px;
-            position: relative;
-            padding-bottom: 10px;
-            font-size: 1.2rem;
-        }
-        
-        .footer-section h3:after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 40px;
-            height: 3px;
-            background: var(--accent);
-        }
-        
-        .footer-section ul {
-            list-style: none;
-        }
-        
-        .footer-section ul li {
-            margin-bottom: 10px;
-        }
-        
-        .footer-section ul li a {
-            color: rgba(255, 255, 255, 0.7);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-        
-        .footer-section ul li a:hover {
-            color: var(--accent);
-        }
-        
-        .social-icons {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .social-icons a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            color: white;
-            transition: all 0.3s ease;
-        }
-        
-        .social-icons a:hover {
-            background: var(--accent);
-            transform: translateY(-3px);
-        }
-        
-        .copyright {
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding-top: 20px;
+        .github-footer {
+            border-top: 1px solid #21262d;
+            padding: 24px 0;
+            margin-top: 40px;
             text-align: center;
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 0.9rem;
-        }
-        
-        /* Mobile Responsiveness */
-        @media (max-width: 1024px) {
-            .featured-section {
-                flex-direction: column;
-                text-align: center;
-            }
+            color: #8b949e;
+            font-size: 12px;
         }
         
         @media (max-width: 768px) {
-            .header-content {
+            .repo-content {
                 flex-direction: column;
-                gap: 15px;
             }
             
-            nav ul {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            
-            .search-container {
+            .repo-sidebar {
                 width: 100%;
-                max-width: 100%;
-            }
-            
-            .dashboard-header {
-                flex-direction: column;
-                gap: 20px;
-                align-items: flex-start;
-            }
-            
-            .courses-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .footer-content {
-                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="container header-content">
-            <div class="logo">
-                <i class="fas fa-graduation-cap"></i>
-                <h1>Academix Pro</h1>
+    <div class="github-header">
+        <div class="github-container">
+            <div class="repo-header">
+                <div class="repo-title">
+                    <i class="fas fa-book"></i>
+                    <span class="repo-name">edu-tech/course-management-system</span>
+                    <span class="repo-status">Public</span>
+                </div>
+                <div class="repo-actions">
+                    <button class="btn">
+                        <i class="far fa-eye"></i> Watch
+                    </button>
+                    <button class="btn">
+                        <i class="fas fa-code-branch"></i> Fork
+                    </button>
+                    <button class="btn">
+                        <i class="far fa-star"></i> Star
+                    </button>
+                    <button class="btn btn-primary">
+                        <i class="fas fa-code"></i> Code
+                    </button>
+                </div>
             </div>
             
-            <nav>
-                <ul>
-                    <li><a href="#" class="active">Dashboard</a></li>
-                    <li><a href="#">Courses</a></li>
-                    <li><a href="#">Calendar</a></li>
-                    <li><a href="#">Grades</a></li>
-                    <li><a href="#">Resources</a></li>
-                </ul>
-            </nav>
-            
-            <div class="user-actions">
-                <div class="search-container">
-                    <input type="text" placeholder="Search courses, materials...">
-                    <button><i class="fas fa-search"></i></button>
-                </div>
-                
-                <div class="notification-badge">
-                    <i class="fas fa-bell"></i>
-                    <span class="badge">3</span>
-                </div>
-                
-                <div class="avatar">
-                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" alt="User Avatar">
+            <div class="repo-nav">
+                <div class="nav-tabs">
+                    <a href="#" class="nav-tab active">
+                        <i class="fas fa-code"></i> Code
+                    </a>
+                    <a href="#" class="nav-tab">
+                        <i class="fas fa-list"></i> Issues
+                    </a>
+                    <a href="#" class="nav-tab">
+                        <i class="fas fa-code-pull-request"></i> Pull requests
+                    </a>
+                    <a href="#" class="nav-tab">
+                        <i class="fas fa-play"></i> Actions
+                    </a>
+                    <a href="#" class="nav-tab">
+                        <i class="fas fa-project-diagram"></i> Projects
+                    </a>
+                    <a href="#" class="nav-tab">
+                        <i class="fas fa-book"></i> Wiki
+                    </a>
+                    <a href="#" class="nav-tab">
+                        <i class="fas fa-shield-alt"></i> Security
+                    </a>
+                    <a href="#" class="nav-tab">
+                        <i class="fas fa-chart-bar"></i> Insights
+                    </a>
                 </div>
             </div>
         </div>
-    </header>
-
-    <!-- Main Content -->
-    <main class="container">
-        <!-- Dashboard Header -->
-        <div class="dashboard-header">
-            <h2>Welcome back, Professor Anderson</h2>
-            <a href="#" class="btn"><i class="fas fa-plus"></i> Create New Course</a>
-        </div>
-        
-        <!-- Statistics -->
-        <div class="dashboard-stats">
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fas fa-users"></i>
-                </div>
-                <div class="stat-info">
-                    <h3>142</h3>
-                    <p>Active Students</p>
-                </div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fas fa-book-open"></i>
-                </div>
-                <div class="stat-info">
-                    <h3>8</h3>
-                    <p>Active Courses</p>
-                </div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fas fa-tasks"></i>
-                </div>
-                <div class="stat-info">
-                    <h3>24</h3>
-                    <p>Pending Assignments</p>
-                </div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fas fa-chart-line"></i>
-                </div>
-                <div class="stat-info">
-                    <h3>92%</h3>
-                    <p>Average Completion</p>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Featured Section with Sea Dog -->
-        <section class="featured-section">
-            <div class="featured-content">
-                <h2>Marine Biology: Coastal Ecosystems</h2>
-                <p>Explore the intricate relationships within coastal ecosystems and the fascinating marine life that inhabits them. This course offers a comprehensive look at marine biology with a focus on conservation and sustainable practices.</p>
-                <p>Join our field studies program to observe sea lions, seals, and other marine mammals in their natural habitats.</p>
-                <a href="#" class="btn"><i class="fas fa-play-circle"></i> Start Learning</a>
-            </div>
-            <div class="featured-image">
-                <!-- Sea Dog Image -->
-                <img src="https://images.unsplash.com/photo-1560270448-8b9c0d54d38a?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Sea Lion in Natural Habitat">
-            </div>
-        </section>
-        
-        <!-- My Courses -->
-        <h2 class="section-title"><i class="fas fa-book"></i> My Courses</h2>
-        
-        <div class="courses-grid">
-            <!-- Course 1 -->
-            <div class="course-card">
-                <div class="course-image">
-                    <img src="https://images.unsplash.com/photo-1550439062-609e1531270e?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Data Science Course">
-                    <div class="course-category">Data Science</div>
-                </div>
-                <div class="course-content">
-                    <h3>Advanced Data Analysis</h3>
-                    <div class="course-meta">
-                        <span><i class="fas fa-user-graduate"></i> 42 Students</span>
-                        <span><i class="fas fa-clock"></i> 12 Weeks</span>
+    </div>
+    
+    <div class="github-container">
+        <div class="repo-content">
+            <div class="repo-main">
+                <div class="file-explorer">
+                    <div class="file-header">
+                        <i class="fas fa-file"></i>
+                        <span>Files and directories</span>
                     </div>
-                    <p class="course-description">Master statistical analysis, machine learning algorithms, and data visualization techniques.</p>
-                    <div class="progress-bar">
-                        <div class="progress-fill"></div>
-                    </div>
-                    <div class="course-actions">
-                        <span>65% Complete</span>
-                        <a href="#" class="btn-outline">Continue</a>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Course 2 -->
-            <div class="course-card">
-                <div class="course-image">
-                    <img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Web Development Course">
-                    <div class="course-category">Web Dev</div>
-                </div>
-                <div class="course-content">
-                    <h3>Full Stack Development</h3>
-                    <div class="course-meta">
-                        <span><i class="fas fa-user-graduate"></i> 38 Students</span>
-                        <span><i class="fas fa-clock"></i> 16 Weeks</span>
-                    </div>
-                    <p class="course-description">Learn modern web development with React, Node.js, databases, and deployment strategies.</p>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 40%;"></div>
-                    </div>
-                    <div class="course-actions">
-                        <span>40% Complete</span>
-                        <a href="#" class="btn-outline">Continue</a>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Course 3 -->
-            <div class="course-card">
-                <div class="course-image">
-                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="AI Course">
-                    <div class="course-category">AI & ML</div>
-                </div>
-                <div class="course-content">
-                    <h3>Machine Learning Fundamentals</h3>
-                    <div class="course-meta">
-                        <span><i class="fas fa-user-graduate"></i> 56 Students</span>
-                        <span><i class="fas fa-clock"></i> 10 Weeks</span>
-                    </div>
-                    <p class="course-description">Introduction to AI concepts, neural networks, and practical ML applications.</p>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 80%;"></div>
-                    </div>
-                    <div class="course-actions">
-                        <span>80% Complete</span>
-                        <a href="#" class="btn-outline">Continue</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>Academix Pro</h3>
-                    <p>Premium course management system designed for educators and institutions seeking streamlined educational workflows.</p>
-                    <div class="social-icons">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    <div class="file-list">
+                        <a href="#" class="file-item">
+                            <i class="fas fa-folder"></i> .github/
+                        </a>
+                        <a href="#" class="file-item">
+                            <i class="fas fa-folder"></i> public/
+                        </a>
+                        <a href="#" class="file-item">
+                            <i class="fas fa-folder"></i> src/
+                        </a>
+                        <a href="#" class="file-item">
+                            <i class="fas fa-file-code"></i> .gitignore
+                        </a>
+                        <a href="#" class="file-item">
+                            <i class="fas fa-file-code"></i> package.json
+                        </a>
+                        <a href="#" class="file-item">
+                            <i class="fas fa-file-code"></i> README.md
+                        </a>
+                        <a href="#" class="file-item">
+                            <i class="fas fa-file-code"></i> tsconfig.json
+                        </a>
+                        <a href="#" class="file-item">
+                            <i class="fas fa-file-code"></i> vite.config.ts
+                        </a>
                     </div>
                 </div>
                 
-                <div class="footer-section">
-                    <h3>Quick Links</h3>
-                    <ul>
-                        <li><a href="#">Dashboard</a></li>
-                        <li><a href="#">My Courses</a></li>
-                        <li><a href="#">Calendar</a></li>
-                        <li><a href="#">Gradebook</a></li>
-                        <li><a href="#">Resources</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-section">
-                    <h3>Support</h3>
-                    <ul>
-                        <li><a href="#">Help Center</a></li>
-                        <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">System Status</a></li>
-                        <li><a href="#">Documentation</a></li>
-                        <li><a href="#">Feedback</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-section">
-                    <h3>Contact Info</h3>
-                    <ul>
-                        <li><i class="fas fa-map-marker-alt"></i> 123 Education Blvd, Tech City</li>
-                        <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
-                        <li><i class="fas fa-envelope"></i> info@academixpro.edu</li>
-                    </ul>
+                <div class="readme-box">
+                    <div class="readme-header">
+                        <i class="fas fa-book"></i>
+                        <span>README.md</span>
+                    </div>
+                    <div class="readme-content">
+                        <h1>Course Management System</h1>
+                        <p>A modern, responsive course management system built with React, TypeScript, and Tailwind CSS.</p>
+                        
+                        <h2>🚀 Features</h2>
+                        <ul>
+                            <li>Modern React 18 with TypeScript</li>
+                            <li>Responsive design with Tailwind CSS</li>
+                            <li>Real-time notifications</li>
+                            <li>Course progress tracking</li>
+                            <li>Student/Teacher dashboards</li>
+                            <li>Dark/Light mode support</li>
+                        </ul>
+                        
+                        <h2>📦 Installation</h2>
+                        <div class="code-block">
+                            <div class="code-line"><span class="line-number">1</span>git clone https://github.com/edu-tech/course-management-system.git</div>
+                            <div class="code-line"><span class="line-number">2</span>cd course-management-system</div>
+                            <div class="code-line"><span class="line-number">3</span>npm install</div>
+                            <div class="code-line"><span class="line-number">4</span>npm run dev</div>
+                        </div>
+                        
+                        <h2>🏗️ Project Structure</h2>
+                        <div class="code-block">
+                            <div class="code-line"><span class="line-number">1</span>src/</div>
+                            <div class="code-line"><span class="line-number">2</span>├── components/          # Reusable UI components</div>
+                            <div class="code-line"><span class="line-number">3</span>├── pages/              # Route-based components</div>
+                            <div class="code-line"><span class="line-number">4</span>├── hooks/              # Custom React hooks</div>
+                            <div class="code-line"><span class="line-number">5</span>├── utils/              # Utility functions</div>
+                            <div class="code-line"><span class="line-number">6</span>├── services/           # API services</div>
+                            <div class="code-line"><span class="line-number">7</span>├── stores/            # State management</div>
+                            <div class="code-line"><span class="line-number">8</span>└── types/             # TypeScript definitions</div>
+                        </div>
+                        
+                        <h2>🛠️ Technologies Used</h2>
+                        <ul>
+                            <li><strong>Frontend:</strong> React 18, TypeScript, Tailwind CSS</li>
+                            <li><strong>Build Tool:</strong> Vite</li>
+                            <li><strong>State Management:</strong> Zustand</li>
+                            <li><strong>Routing:</strong> React Router</li>
+                            <li><strong>HTTP Client:</strong> React Query</li>
+                            <li><strong>Animations:</strong> Framer Motion</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
             
-            <div class="copyright">
-                <p>&copy; 2023 Academix Pro. All rights reserved. | Designed for Educational Excellence</p>
+            <div class="repo-sidebar">
+                <div class="sidebar-section">
+                    <div class="sidebar-header">About</div>
+                    <div class="sidebar-content">
+                        <p>A modern course management system with sleek design and cutting-edge technologies.</p>
+                        <p><i class="fas fa-link"></i> <a href="#">https://course-management.demo</a></p>
+                    </div>
+                </div>
+                
+                <div class="sidebar-section">
+                    <div class="sidebar-header">Releases</div>
+                    <div class="sidebar-content">
+                        <p><strong>v1.0.0</strong> - Latest</p>
+                        <p>Initial release with core features</p>
+                        <p><small>Released on January 15, 2023</small></p>
+                    </div>
+                </div>
+                
+                <div class="sidebar-section">
+                    <div class="sidebar-header">Languages</div>
+                    <div class="sidebar-content">
+                        <div class="lang-stat">
+                            <span><span class="lang-color" style="background: #3572A5;"></span> TypeScript</span>
+                            <span>64.5%</span>
+                        </div>
+                        <div class="lang-stat">
+                            <span><span class="lang-color" style="background: #E34C26;"></span> HTML</span>
+                            <span>22.1%</span>
+                        </div>
+                        <div class="lang-stat">
+                            <span><span class="lang-color" style="background: #563D7C;"></span> CSS</span>
+                            <span>13.4%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sidebar-section">
+                    <div class="sidebar-header">Contributors</div>
+                    <div class="sidebar-content">
+                        <div class="contributor">
+                            <img src="https://avatars.githubusercontent.com/u/1?s=40" alt="Contributor" class="avatar">
+                            <span>techlead</span>
+                        </div>
+                        <div class="contributor">
+                            <img src="https://avatars.githubusercontent.com/u/2?s=40" alt="Contributor" class="avatar">
+                            <span>designer</span>
+                        </div>
+                        <div class="contributor">
+                            <img src="https://avatars.githubusercontent.com/u/3?s=40" alt="Contributor" class="avatar">
+                            <span>developer</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </footer>
+    </div>
+    
+    <div class="github-footer">
+        <div class="github-container">
+            <p>© 2023 Course Management System. This repository is licensed under MIT License.</p>
+        </div>
+    </div>
 
     <script>
-        // Simple interactions for demonstration
+        // Simple GitHub-style interactions
         document.addEventListener('DOMContentLoaded', function() {
-            // Search functionality
-            const searchInput = document.querySelector('.search-container input');
-            searchInput.addEventListener('keyup', function(event) {
-                if (event.key === 'Enter') {
-                    alert(`Searching for: ${this.value}`);
-                    this.value = '';
-                }
-            });
-            
-            // Course card hover effect enhancement
-            const courseCards = document.querySelectorAll('.course-card');
-            courseCards.forEach(card => {
-                card.addEventListener('mouseenter', function() {
-                    this.style.zIndex = '10';
-                });
-                
-                card.addEventListener('mouseleave', function() {
-                    this.style.zIndex = '1';
+            // File explorer toggle (simplified)
+            const fileItems = document.querySelectorAll('.file-item');
+            fileItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    alert('Navigating to: ' + this.textContent.trim());
                 });
             });
             
-            // Notification badge click
-            const notificationBadge = document.querySelector('.notification-badge');
-            notificationBadge.addEventListener('click', function() {
-                alert('You have 3 new notifications');
+            // Tab navigation
+            const navTabs = document.querySelectorAll('.nav-tab');
+            navTabs.forEach(tab => {
+                tab.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    navTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            // Button interactions
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const action = this.textContent.trim();
+                    alert('GitHub action: ' + action);
+                });
             });
         });
     </script>
